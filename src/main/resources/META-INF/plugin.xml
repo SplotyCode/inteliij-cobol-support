@@ -33,5 +33,6 @@
         <lang.psiStructureViewFactory
                 language="COBOL"
                 implementationClass="de.scandurra.inteliijcobolsupport.structure.CobolStructureViewFactory"/>
+        <navbar implementation="de.scandurra.inteliijcobolsupport.structure.CobolNavBarModelExtension"/>
     </extensions>
 </idea-plugin>
