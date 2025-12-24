@@ -21,5 +21,8 @@
                   implementationClass="de.scandurra.inteliijcobolsupport.CobolFileType"
                   fieldName="INSTANCE"
                   extensions="cob;cbl"/>
+        <lang.parserDefinition
+                language="COBOL"
+                implementationClass="de.scandurra.inteliijcobolsupport.CobolParserDefinition"/>
     </extensions>
 </idea-plugin>

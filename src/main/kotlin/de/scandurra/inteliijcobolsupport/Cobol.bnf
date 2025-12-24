@@ -1,0 +1,51 @@
+{
+  parserClass="de.scandurra.inteliijcobolsupport.parser.CobolParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Cobol"
+  psiImplClassSuffix="Impl"
+  psiPackage="de.scandurra.inteliijcobolsupport.psi"
+  psiImplPackage="de.scandurra.inteliijcobolsupport.psi.impl"
+
+  elementTypeHolderClass="de.scandurra.inteliijcobolsupport.psi.CobolTypes"
+  elementTypeClass="de.scandurra.inteliijcobolsupport.psi.CobolElementType"
+  tokenTypeClass="de.scandurra.inteliijcobolsupport.psi.CobolTokenType"
+}
+
+cobolFile ::= line*
+
+line ::= LINE_NUMBER lineBody
+
+private lineBody ::=
+    identificationDivision
+  | programIdLine
+  | dataDivision
+  | workingStorageSection
+  | dataDescription
+  | procedureDivision
+  | paragraphHeader
+  | statementLine
+  ;
+
+identificationDivision ::= IDENTIFICATION DIVISION DOT
+programIdLine          ::= PROGRAM_ID DOT IDENT DOT
+dataDivision           ::= DATA DIVISION DOT
+workingStorageSection  ::= WORKING_STORAGE SECTION DOT
+procedureDivision      ::= PROCEDURE DIVISION DOT
+
+paragraphHeader        ::= IDENT DOT
+
+dataDescription        ::= NUMBER IDENT pictureClause valueClause? DOT
+pictureClause          ::= (PIC | PICTURE) pictureString
+pictureString          ::= NUMBER (LPAREN NUMBER RPAREN)?  /* todo */
+valueClause            ::= VALUE NUMBER
+
+statementLine          ::= performStmt | stopStmt | displayStmt
+
+performStmt            ::= PERFORM IDENT performVarying
+performVarying         ::= VARYING IDENT FROM NUMBER BY NUMBER UNTIL condition
+condition              ::= IDENT EQ NUMBER
+
+stopStmt               ::= STOP RUN DOT
+displayStmt            ::= DISPLAY displayArg+ DOT
+displayArg             ::= STRING | IDENT
