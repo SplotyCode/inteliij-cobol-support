@@ -12,6 +12,7 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
 
     <resource-bundle>messages.MyMessageBundle</resource-bundle>
 
@@ -29,5 +30,8 @@
                 implementationClass="de.scandurra.inteliijcobolsupport.highlight.CobolSyntaxHighlighterFactory"/>
         <colorSettingsPage
                 implementation="de.scandurra.inteliijcobolsupport.highlight.CobolColorSettingsPage"/>
+        <lang.psiStructureViewFactory
+                language="COBOL"
+                implementationClass="de.scandurra.inteliijcobolsupport.structure.CobolStructureViewFactory"/>
     </extensions>
 </idea-plugin>

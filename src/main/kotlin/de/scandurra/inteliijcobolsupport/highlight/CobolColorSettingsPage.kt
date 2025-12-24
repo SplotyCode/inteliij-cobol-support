@@ -9,18 +9,18 @@ import javax.swing.Icon
 
 class CobolColorSettingsPage : ColorSettingsPage {
     private val descriptors = arrayOf(
-        AttributesDescriptor("Keywords", CobolSyntaxHighlighter.Companion.KEYWORD),
-        AttributesDescriptor("Identifiers", CobolSyntaxHighlighter.Companion.IDENTIFIER),
-        AttributesDescriptor("Numbers", CobolSyntaxHighlighter.Companion.NUMBER),
-        AttributesDescriptor("Strings", CobolSyntaxHighlighter.Companion.STRING),
-        AttributesDescriptor("Operators", CobolSyntaxHighlighter.Companion.OPERATOR),
-        AttributesDescriptor("Punctuation", CobolSyntaxHighlighter.Companion.PUNCTUATION),
-        AttributesDescriptor("Line numbers (as code)", CobolSyntaxHighlighter.Companion.LINE_NUMBER),
-        AttributesDescriptor("Bad character", CobolSyntaxHighlighter.Companion.BAD_CHARACTER),
+        AttributesDescriptor("Keywords", CobolSyntaxHighlighter.KEYWORD),
+        AttributesDescriptor("Identifiers", CobolSyntaxHighlighter.IDENTIFIER),
+        AttributesDescriptor("Numbers", CobolSyntaxHighlighter.NUMBER),
+        AttributesDescriptor("Strings", CobolSyntaxHighlighter.STRING),
+        AttributesDescriptor("Operators", CobolSyntaxHighlighter.OPERATOR),
+        AttributesDescriptor("Punctuation", CobolSyntaxHighlighter.PUNCTUATION),
+        AttributesDescriptor("Line numbers (as code)", CobolSyntaxHighlighter.LINE_NUMBER),
+        AttributesDescriptor("Bad character", CobolSyntaxHighlighter.BAD_CHARACTER),
     )
 
     override fun getIcon(): Icon = CobolIcons.FILE
-    override fun getHighlighter() = CobolSyntaxHighlighter()
+    override fun getHighlighter() = CobolSyntaxHighlighter
 
     override fun getDemoText(): String = """
 01 IDENTIFICATION DIVISION.
