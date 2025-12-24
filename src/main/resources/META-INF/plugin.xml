@@ -24,5 +24,10 @@
         <lang.parserDefinition
                 language="COBOL"
                 implementationClass="de.scandurra.inteliijcobolsupport.CobolParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="COBOL"
+                implementationClass="de.scandurra.inteliijcobolsupport.highlight.CobolSyntaxHighlighterFactory"/>
+        <colorSettingsPage
+                implementation="de.scandurra.inteliijcobolsupport.highlight.CobolColorSettingsPage"/>
     </extensions>
 </idea-plugin>

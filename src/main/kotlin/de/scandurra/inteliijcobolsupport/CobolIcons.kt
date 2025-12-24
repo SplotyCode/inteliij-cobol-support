@@ -5,5 +5,5 @@ import javax.swing.Icon
 
 
 object CobolIcons {
-    val iconType: Icon = getIcon("/icons/fileIcon.svg", CobolIcons::class.java)
+    val FILE: Icon = getIcon("/icons/fileIcon.svg", CobolIcons::class.java)
 }

@@ -13,5 +13,5 @@ object CobolFileType : LanguageFileType(CobolLanguage) {
 
     override fun getDefaultExtension(): String = "cob"
 
-    override fun getIcon(): Icon = CobolIcons.iconType
+    override fun getIcon(): Icon = CobolIcons.FILE
 }
