@@ -14,4 +14,12 @@
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyMessageBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="COBOL"
+                  language="COBOL"
+                  implementationClass="de.scandurra.inteliijcobolsupport.CobolFileType"
+                  fieldName="INSTANCE"
+                  extensions="cob;cbl"/>
+    </extensions>
 </idea-plugin>
