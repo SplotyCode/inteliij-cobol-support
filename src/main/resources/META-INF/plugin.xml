@@ -34,5 +34,7 @@
                 language="COBOL"
                 implementationClass="de.scandurra.inteliijcobolsupport.structure.CobolStructureViewFactory"/>
         <navbar implementation="de.scandurra.inteliijcobolsupport.structure.CobolNavBarModelExtension"/>
+        <gotoSymbolContributor
+                implementation="de.scandurra.inteliijcobolsupport.navigation.CobolChooseByNameContributor"/>
     </extensions>
 </idea-plugin>
