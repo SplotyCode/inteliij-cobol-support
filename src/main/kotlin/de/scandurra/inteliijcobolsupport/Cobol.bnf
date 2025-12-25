@@ -12,6 +12,9 @@
   tokenTypeClass="de.scandurra.inteliijcobolsupport.psi.CobolTokenType"
 }
 
+/* this definition is not as strict as it could
+ * it also causes the psi to be not as nested as it could be
+ * I dont really like it but it is okayish for a small sample project */
 cobolFile ::= line*
 
 line ::= LINE_NUMBER lineBody
