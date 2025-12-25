@@ -33,4 +33,10 @@ public class CobolPerformStmtImpl extends ASTWrapperPsiElement implements CobolP
     return findNotNullChildByClass(CobolPerformVarying.class);
   }
 
+  @Override
+  @NotNull
+  public CobolRefIdent getRefIdent() {
+    return findNotNullChildByClass(CobolRefIdent.class);
+  }
+
 }

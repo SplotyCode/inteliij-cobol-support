@@ -22,6 +22,7 @@ public interface CobolTypes {
   IElementType PICTURE_STRING = new CobolElementType("PICTURE_STRING");
   IElementType PROCEDURE_DIVISION = new CobolElementType("PROCEDURE_DIVISION");
   IElementType PROGRAM_ID_LINE = new CobolElementType("PROGRAM_ID_LINE");
+  IElementType REF_IDENT = new CobolElementType("REF_IDENT");
   IElementType STATEMENT_LINE = new CobolElementType("STATEMENT_LINE");
   IElementType STOP_STMT = new CobolElementType("STOP_STMT");
   IElementType VALUE_CLAUSE = new CobolElementType("VALUE_CLAUSE");
@@ -98,6 +99,9 @@ public interface CobolTypes {
       }
       else if (type == PROGRAM_ID_LINE) {
         return new CobolProgramIdLineImpl(node);
+      }
+      else if (type == REF_IDENT) {
+        return new CobolRefIdentImpl(node);
       }
       else if (type == STATEMENT_LINE) {
         return new CobolStatementLineImpl(node);

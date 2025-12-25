@@ -27,4 +27,10 @@ public class CobolConditionImpl extends ASTWrapperPsiElement implements CobolCon
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public CobolRefIdent getRefIdent() {
+    return findNotNullChildByClass(CobolRefIdent.class);
+  }
+
 }

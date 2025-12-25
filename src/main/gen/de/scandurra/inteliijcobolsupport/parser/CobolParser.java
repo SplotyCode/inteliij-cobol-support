@@ -48,13 +48,14 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT EQ NUMBER
+  // refIdent EQ NUMBER
   public static boolean condition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "condition")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENT, EQ, NUMBER);
+    r = refIdent(b, l + 1);
+    r = r && consumeTokens(b, 0, EQ, NUMBER);
     exit_section_(b, m, CONDITION, r);
     return r;
   }
@@ -94,14 +95,14 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING | IDENT
+  // STRING | refIdent
   public static boolean displayArg(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "displayArg")) return false;
     if (!nextTokenIs(b, "<display arg>", IDENT, STRING)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DISPLAY_ARG, "<display arg>");
     r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, IDENT);
+    if (!r) r = refIdent(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -196,26 +197,29 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PERFORM IDENT performVarying
+  // PERFORM refIdent performVarying
   public static boolean performStmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "performStmt")) return false;
     if (!nextTokenIs(b, PERFORM)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PERFORM, IDENT);
+    r = consumeToken(b, PERFORM);
+    r = r && refIdent(b, l + 1);
     r = r && performVarying(b, l + 1);
     exit_section_(b, m, PERFORM_STMT, r);
     return r;
   }
 
   /* ********************************************************** */
-  // VARYING IDENT FROM NUMBER BY NUMBER UNTIL condition
+  // VARYING refIdent FROM NUMBER BY NUMBER UNTIL condition
   public static boolean performVarying(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "performVarying")) return false;
     if (!nextTokenIs(b, VARYING)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VARYING, IDENT, FROM, NUMBER, BY, NUMBER, UNTIL);
+    r = consumeToken(b, VARYING);
+    r = r && refIdent(b, l + 1);
+    r = r && consumeTokens(b, 0, FROM, NUMBER, BY, NUMBER, UNTIL);
     r = r && condition(b, l + 1);
     exit_section_(b, m, PERFORM_VARYING, r);
     return r;
@@ -294,6 +298,18 @@ public class CobolParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, PROGRAM_ID, DOT, IDENT, DOT);
     exit_section_(b, m, PROGRAM_ID_LINE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean refIdent(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "refIdent")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, REF_IDENT, r);
     return r;
   }
 

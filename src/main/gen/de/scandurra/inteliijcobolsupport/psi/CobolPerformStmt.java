@@ -10,4 +10,7 @@ public interface CobolPerformStmt extends PsiElement {
   @NotNull
   CobolPerformVarying getPerformVarying();
 
+  @NotNull
+  CobolRefIdent getRefIdent();
+
 }

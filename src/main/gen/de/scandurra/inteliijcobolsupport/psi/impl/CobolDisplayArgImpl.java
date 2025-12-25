@@ -27,4 +27,10 @@ public class CobolDisplayArgImpl extends ASTWrapperPsiElement implements CobolDi
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public CobolRefIdent getRefIdent() {
+    return findChildByClass(CobolRefIdent.class);
+  }
+
 }

@@ -27,6 +27,8 @@ private lineBody ::=
   | statementLine
   ;
 
+refIdent ::= IDENT { mixin="de.scandurra.inteliijcobolsupport.psi.CobolRefIdentMixin" }
+
 identificationDivision ::= IDENTIFICATION DIVISION DOT
 programIdLine          ::= PROGRAM_ID DOT IDENT DOT
 dataDivision           ::= DATA DIVISION DOT
@@ -42,10 +44,10 @@ valueClause            ::= VALUE NUMBER
 
 statementLine          ::= performStmt | stopStmt | displayStmt
 
-performStmt            ::= PERFORM IDENT performVarying
-performVarying         ::= VARYING IDENT FROM NUMBER BY NUMBER UNTIL condition
-condition              ::= IDENT EQ NUMBER
+performStmt            ::= PERFORM refIdent performVarying
+performVarying         ::= VARYING refIdent FROM NUMBER BY NUMBER UNTIL condition
+condition              ::= refIdent EQ NUMBER
 
 stopStmt               ::= STOP RUN DOT
 displayStmt            ::= DISPLAY displayArg+ DOT
-displayArg             ::= STRING | IDENT
+displayArg             ::= STRING | refIdent

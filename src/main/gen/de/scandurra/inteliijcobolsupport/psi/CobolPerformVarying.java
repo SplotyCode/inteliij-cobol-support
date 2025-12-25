@@ -10,4 +10,7 @@ public interface CobolPerformVarying extends PsiElement {
   @NotNull
   CobolCondition getCondition();
 
+  @NotNull
+  CobolRefIdent getRefIdent();
+
 }

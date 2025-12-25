@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface CobolCondition extends PsiElement {
 
+  @NotNull
+  CobolRefIdent getRefIdent();
+
 }

@@ -36,5 +36,8 @@
         <navbar implementation="de.scandurra.inteliijcobolsupport.structure.CobolNavBarModelExtension"/>
         <gotoSymbolContributor
                 implementation="de.scandurra.inteliijcobolsupport.navigation.CobolChooseByNameContributor"/>
+        <psi.referenceContributor
+                language="COBOL"
+                implementation="de.scandurra.inteliijcobolsupport.reference.CobolReferenceContributor"/>
     </extensions>
 </idea-plugin>
