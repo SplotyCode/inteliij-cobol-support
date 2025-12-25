@@ -2,6 +2,9 @@
 
 Simple IntelliJ IDEA plugin that adds basic COBOL language support: syntax highlighting, navigation, structure view, and references.
 
+> [!WARNING]
+> Proof of concept: this plugin currently supports only a very small subset of COBOL.
+
 ![Screenshot](img/img.png)
 
 ## Features
