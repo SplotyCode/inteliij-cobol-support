@@ -10,10 +10,7 @@ import com.intellij.util.ProcessingContext
 import de.scandurra.inteliijcobolsupport.psi.*
 
 class CobolReferenceContributor : PsiReferenceContributor() {
-    private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(CobolReferenceContributor::class.java)
-
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
-        LOG.warn("dasadsasda")
         registrar.registerReferenceProvider(
             PlatformPatterns.psiElement(CobolTypes.REF_IDENT),
             object : PsiReferenceProvider() {

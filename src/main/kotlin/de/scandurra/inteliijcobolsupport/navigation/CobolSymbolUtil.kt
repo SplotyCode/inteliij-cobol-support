@@ -10,17 +10,17 @@ import de.scandurra.inteliijcobolsupport.CobolFileType
 import de.scandurra.inteliijcobolsupport.psi.*
 
 object CobolSymbolUtil {
-    fun elementName(el: PsiElement): String? =
-        el.node.findChildByType(CobolTypes.IDENT)?.text
+    fun elementName(element: PsiElement): String? =
+        element.node.findChildByType(CobolTypes.IDENT)?.text
 
     fun findAllSymbols(project: Project, scope: GlobalSearchScope = GlobalSearchScope.projectScope(project)): List<PsiElement> {
         val psiManager = PsiManager.getInstance(project)
-        val vFiles = FileTypeIndex.getFiles(CobolFileType, scope)
+        val files = FileTypeIndex.getFiles(CobolFileType, scope)
 
         val result = ArrayList<PsiElement>()
 
-        for (vf in vFiles) {
-            val file = psiManager.findFile(vf) as? CobolFile ?: continue
+        for (file in files) {
+            val file = psiManager.findFile(file) as? CobolFile ?: continue
 
             result += PsiTreeUtil.collectElementsOfType(file, CobolProgramIdLine::class.java)
             result += PsiTreeUtil.collectElementsOfType(file, CobolParagraphHeader::class.java)

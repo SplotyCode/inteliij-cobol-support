@@ -22,21 +22,16 @@ class CobolReference(
 ) {
     private val key: String = element.text
 
+    private fun getDefinitionType() = when (kind) {
+        CobolRefKind.PARAGRAPH -> CobolParagraphHeader::class.java
+        CobolRefKind.DATA_ITEM -> CobolDataDescription::class.java
+    }
+
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val file = myElement.containingFile as? CobolFile ?: return ResolveResult.EMPTY_ARRAY
 
-        val targets: List<PsiElement> = when (kind) {
-            CobolRefKind.PARAGRAPH -> {
-                PsiTreeUtil.collectElementsOfType(file, CobolParagraphHeader::class.java)
-                    .filter { nameOf(it) == key }
-                    .map { it as PsiElement }
-            }
-            CobolRefKind.DATA_ITEM -> {
-                PsiTreeUtil.collectElementsOfType(file, CobolDataDescription::class.java)
-                    .filter { nameOf(it) == key }
-                    .map { it as PsiElement }
-            }
-        }
+        val targets = PsiTreeUtil.collectElementsOfType(file, getDefinitionType())
+            .filter { nameOf(it) == key }
 
         return targets.map { PsiElementResolveResult(it) }.toTypedArray()
     }
@@ -44,14 +39,9 @@ class CobolReference(
     override fun getVariants(): Array<Any> {
         val file = myElement.containingFile as? CobolFile ?: return emptyArray()
 
-        val defs: Collection<PsiElement> = when (kind) {
-            CobolRefKind.PARAGRAPH -> PsiTreeUtil.collectElementsOfType(file, CobolParagraphHeader::class.java)
-            CobolRefKind.DATA_ITEM -> PsiTreeUtil.collectElementsOfType(file, CobolDataDescription::class.java)
-        }.map { it as PsiElement }
-
-        return defs.mapNotNull { def ->
-            val n = nameOf(def) ?: return@mapNotNull null
-            LookupElementBuilder.create(def, n)
+        return PsiTreeUtil.collectElementsOfType(file, getDefinitionType()).mapNotNull { def ->
+            val name = nameOf(def) ?: return@mapNotNull null
+            LookupElementBuilder.create(def, name)
                 .withIcon(
                     when (kind) {
                         CobolRefKind.PARAGRAPH -> AllIcons.Nodes.Function
@@ -62,6 +52,6 @@ class CobolReference(
         }.toTypedArray()
     }
 
-    private fun nameOf(el: PsiElement): String? =
-        el.node.findChildByType(CobolTypes.IDENT)?.text
+    private fun nameOf(element: PsiElement): String? =
+        element.node.findChildByType(CobolTypes.IDENT)?.text
 }
