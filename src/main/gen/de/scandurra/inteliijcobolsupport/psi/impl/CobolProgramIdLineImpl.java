@@ -27,4 +27,10 @@ public class CobolProgramIdLineImpl extends ASTWrapperPsiElement implements Cobo
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public CobolSentence getSentence() {
+    return findChildByClass(CobolSentence.class);
+  }
+
 }

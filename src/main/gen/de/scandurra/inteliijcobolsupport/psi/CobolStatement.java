@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface CobolProgramIdLine extends PsiElement {
+public interface CobolStatement extends PsiElement {
 
   @Nullable
-  CobolSentence getSentence();
+  CobolDisplayStmt getDisplayStmt();
+
+  @Nullable
+  CobolPerformStmt getPerformStmt();
+
+  @Nullable
+  CobolStopStmt getStopStmt();
 
 }

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface CobolPerformStmt extends PsiElement {
 
-  @NotNull
+  @Nullable
   CobolPerformVarying getPerformVarying();
 
   @NotNull

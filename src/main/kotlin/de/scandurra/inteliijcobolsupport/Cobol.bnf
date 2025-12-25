@@ -24,13 +24,13 @@ private lineBody ::=
   | dataDescription
   | procedureDivision
   | paragraphHeader
-  | statementLine
+  | sentence
   ;
 
 refIdent ::= IDENT { mixin="de.scandurra.inteliijcobolsupport.psi.CobolRefIdentMixin" }
 
 identificationDivision ::= IDENTIFICATION DIVISION DOT
-programIdLine          ::= PROGRAM_ID DOT IDENT DOT
+programIdLine          ::= PROGRAM_ID DOT? IDENT (DOT | sentence)?
 dataDivision           ::= DATA DIVISION DOT
 workingStorageSection  ::= WORKING_STORAGE SECTION DOT
 procedureDivision      ::= PROCEDURE DIVISION DOT
@@ -42,12 +42,15 @@ pictureClause          ::= (PIC | PICTURE) pictureString
 pictureString          ::= NUMBER (LPAREN NUMBER RPAREN)?  /* todo */
 valueClause            ::= VALUE NUMBER
 
-statementLine          ::= performStmt | stopStmt | displayStmt
+sentence ::= statement_with_prefix+ LINE_NUMBER? DOT
+private statement_with_prefix ::= LINE_NUMBER? statement
 
-performStmt            ::= PERFORM refIdent performVarying
+statement ::= performStmt | stopStmt | displayStmt
+
+performStmt            ::= PERFORM refIdent performVarying?
 performVarying         ::= VARYING refIdent FROM NUMBER BY NUMBER UNTIL condition
 condition              ::= refIdent EQ NUMBER
 
-stopStmt               ::= STOP RUN DOT
-displayStmt            ::= DISPLAY displayArg+ DOT
+stopStmt               ::= STOP RUN
+displayStmt            ::= DISPLAY displayArg+
 displayArg             ::= STRING | refIdent

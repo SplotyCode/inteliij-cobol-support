@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface CobolProgramIdLine extends PsiElement {
+public interface CobolSentence extends PsiElement {
 
-  @Nullable
-  CobolSentence getSentence();
+  @NotNull
+  List<CobolStatement> getStatementList();
 
 }

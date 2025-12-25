@@ -26,7 +26,7 @@ public interface CobolLine extends PsiElement {
   CobolProgramIdLine getProgramIdLine();
 
   @Nullable
-  CobolStatementLine getStatementLine();
+  CobolSentence getSentence();
 
   @Nullable
   CobolWorkingStorageSection getWorkingStorageSection();

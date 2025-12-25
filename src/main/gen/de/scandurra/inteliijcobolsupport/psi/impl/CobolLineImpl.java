@@ -65,8 +65,8 @@ public class CobolLineImpl extends ASTWrapperPsiElement implements CobolLine {
 
   @Override
   @Nullable
-  public CobolStatementLine getStatementLine() {
-    return findChildByClass(CobolStatementLine.class);
+  public CobolSentence getSentence() {
+    return findChildByClass(CobolSentence.class);
   }
 
   @Override

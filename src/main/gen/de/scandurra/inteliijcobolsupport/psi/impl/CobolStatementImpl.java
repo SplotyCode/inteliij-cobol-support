@@ -11,14 +11,14 @@ import static de.scandurra.inteliijcobolsupport.psi.CobolTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.scandurra.inteliijcobolsupport.psi.*;
 
-public class CobolPerformStmtImpl extends ASTWrapperPsiElement implements CobolPerformStmt {
+public class CobolStatementImpl extends ASTWrapperPsiElement implements CobolStatement {
 
-  public CobolPerformStmtImpl(@NotNull ASTNode node) {
+  public CobolStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull CobolVisitor visitor) {
-    visitor.visitPerformStmt(this);
+    visitor.visitStatement(this);
   }
 
   @Override
@@ -29,14 +29,20 @@ public class CobolPerformStmtImpl extends ASTWrapperPsiElement implements CobolP
 
   @Override
   @Nullable
-  public CobolPerformVarying getPerformVarying() {
-    return findChildByClass(CobolPerformVarying.class);
+  public CobolDisplayStmt getDisplayStmt() {
+    return findChildByClass(CobolDisplayStmt.class);
   }
 
   @Override
-  @NotNull
-  public CobolRefIdent getRefIdent() {
-    return findNotNullChildByClass(CobolRefIdent.class);
+  @Nullable
+  public CobolPerformStmt getPerformStmt() {
+    return findChildByClass(CobolPerformStmt.class);
+  }
+
+  @Override
+  @Nullable
+  public CobolStopStmt getStopStmt() {
+    return findChildByClass(CobolStopStmt.class);
   }
 
 }

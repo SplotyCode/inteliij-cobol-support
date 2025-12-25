@@ -23,7 +23,8 @@ public interface CobolTypes {
   IElementType PROCEDURE_DIVISION = new CobolElementType("PROCEDURE_DIVISION");
   IElementType PROGRAM_ID_LINE = new CobolElementType("PROGRAM_ID_LINE");
   IElementType REF_IDENT = new CobolElementType("REF_IDENT");
-  IElementType STATEMENT_LINE = new CobolElementType("STATEMENT_LINE");
+  IElementType SENTENCE = new CobolElementType("SENTENCE");
+  IElementType STATEMENT = new CobolElementType("STATEMENT");
   IElementType STOP_STMT = new CobolElementType("STOP_STMT");
   IElementType VALUE_CLAUSE = new CobolElementType("VALUE_CLAUSE");
   IElementType WORKING_STORAGE_SECTION = new CobolElementType("WORKING_STORAGE_SECTION");
@@ -35,6 +36,7 @@ public interface CobolTypes {
   IElementType DOT = new CobolTokenType("DOT");
   IElementType EQ = new CobolTokenType("EQ");
   IElementType FROM = new CobolTokenType("FROM");
+  IElementType ID = new CobolTokenType("ID");
   IElementType IDENT = new CobolTokenType("IDENT");
   IElementType IDENTIFICATION = new CobolTokenType("IDENTIFICATION");
   IElementType LINE_NUMBER = new CobolTokenType("LINE_NUMBER");
@@ -103,8 +105,11 @@ public interface CobolTypes {
       else if (type == REF_IDENT) {
         return new CobolRefIdentImpl(node);
       }
-      else if (type == STATEMENT_LINE) {
-        return new CobolStatementLineImpl(node);
+      else if (type == SENTENCE) {
+        return new CobolSentenceImpl(node);
+      }
+      else if (type == STATEMENT) {
+        return new CobolStatementImpl(node);
       }
       else if (type == STOP_STMT) {
         return new CobolStopStmtImpl(node);

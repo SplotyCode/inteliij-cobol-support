@@ -8,41 +8,23 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static de.scandurra.inteliijcobolsupport.psi.CobolTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import de.scandurra.inteliijcobolsupport.psi.CobolRefIdentMixin;
 import de.scandurra.inteliijcobolsupport.psi.*;
 
-public class CobolStatementLineImpl extends ASTWrapperPsiElement implements CobolStatementLine {
+public class CobolRefIdentImpl extends CobolRefIdentMixin implements CobolRefIdent {
 
-  public CobolStatementLineImpl(@NotNull ASTNode node) {
+  public CobolRefIdentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull CobolVisitor visitor) {
-    visitor.visitStatementLine(this);
+    visitor.visitRefIdent(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof CobolVisitor) accept((CobolVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public CobolDisplayStmt getDisplayStmt() {
-    return findChildByClass(CobolDisplayStmt.class);
-  }
-
-  @Override
-  @Nullable
-  public CobolPerformStmt getPerformStmt() {
-    return findChildByClass(CobolPerformStmt.class);
-  }
-
-  @Override
-  @Nullable
-  public CobolStopStmt getStopStmt() {
-    return findChildByClass(CobolStopStmt.class);
   }
 
 }

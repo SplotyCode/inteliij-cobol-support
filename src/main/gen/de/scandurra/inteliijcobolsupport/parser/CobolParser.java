@@ -108,7 +108,7 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DISPLAY displayArg+ DOT
+  // DISPLAY displayArg+
   public static boolean displayStmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "displayStmt")) return false;
     if (!nextTokenIs(b, DISPLAY)) return false;
@@ -116,7 +116,6 @@ public class CobolParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, DISPLAY);
     r = r && displayStmt_1(b, l + 1);
-    r = r && consumeToken(b, DOT);
     exit_section_(b, m, DISPLAY_STMT, r);
     return r;
   }
@@ -137,14 +136,24 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFICATION DIVISION DOT
+  // (IDENTIFICATION | ID) DIVISION DOT
   public static boolean identificationDivision(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "identificationDivision")) return false;
-    if (!nextTokenIs(b, IDENTIFICATION)) return false;
+    if (!nextTokenIs(b, "<identification division>", ID, IDENTIFICATION)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFICATION, DIVISION, DOT);
-    exit_section_(b, m, IDENTIFICATION_DIVISION, r);
+    Marker m = enter_section_(b, l, _NONE_, IDENTIFICATION_DIVISION, "<identification division>");
+    r = identificationDivision_0(b, l + 1);
+    r = r && consumeTokens(b, 0, DIVISION, DOT);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // IDENTIFICATION | ID
+  private static boolean identificationDivision_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identificationDivision_0")) return false;
+    boolean r;
+    r = consumeToken(b, IDENTIFICATION);
+    if (!r) r = consumeToken(b, ID);
     return r;
   }
 
@@ -169,7 +178,7 @@ public class CobolParser implements PsiParser, LightPsiParser {
   //   | dataDescription
   //   | procedureDivision
   //   | paragraphHeader
-  //   | statementLine
+  //   | sentence
   static boolean lineBody(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "lineBody")) return false;
     boolean r;
@@ -180,7 +189,7 @@ public class CobolParser implements PsiParser, LightPsiParser {
     if (!r) r = dataDescription(b, l + 1);
     if (!r) r = procedureDivision(b, l + 1);
     if (!r) r = paragraphHeader(b, l + 1);
-    if (!r) r = statementLine(b, l + 1);
+    if (!r) r = sentence(b, l + 1);
     return r;
   }
 
@@ -197,7 +206,7 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PERFORM refIdent performVarying
+  // PERFORM refIdent performVarying?
   public static boolean performStmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "performStmt")) return false;
     if (!nextTokenIs(b, PERFORM)) return false;
@@ -205,9 +214,16 @@ public class CobolParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, PERFORM);
     r = r && refIdent(b, l + 1);
-    r = r && performVarying(b, l + 1);
+    r = r && performStmt_2(b, l + 1);
     exit_section_(b, m, PERFORM_STMT, r);
     return r;
+  }
+
+  // performVarying?
+  private static boolean performStmt_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "performStmt_2")) return false;
+    performVarying(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -290,14 +306,40 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PROGRAM_ID DOT IDENT DOT
+  // PROGRAM_ID DOT? IDENT (DOT | sentence)?
   public static boolean programIdLine(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "programIdLine")) return false;
     if (!nextTokenIs(b, PROGRAM_ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PROGRAM_ID, DOT, IDENT, DOT);
+    r = consumeToken(b, PROGRAM_ID);
+    r = r && programIdLine_1(b, l + 1);
+    r = r && consumeToken(b, IDENT);
+    r = r && programIdLine_3(b, l + 1);
     exit_section_(b, m, PROGRAM_ID_LINE, r);
+    return r;
+  }
+
+  // DOT?
+  private static boolean programIdLine_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "programIdLine_1")) return false;
+    consumeToken(b, DOT);
+    return true;
+  }
+
+  // (DOT | sentence)?
+  private static boolean programIdLine_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "programIdLine_3")) return false;
+    programIdLine_3_0(b, l + 1);
+    return true;
+  }
+
+  // DOT | sentence
+  private static boolean programIdLine_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "programIdLine_3_0")) return false;
+    boolean r;
+    r = consumeToken(b, DOT);
+    if (!r) r = sentence(b, l + 1);
     return r;
   }
 
@@ -314,11 +356,46 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // performStmt | stopStmt | displayStmt
-  public static boolean statementLine(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statementLine")) return false;
+  // statement_with_prefix+ LINE_NUMBER? DOT
+  public static boolean sentence(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "sentence")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, STATEMENT_LINE, "<statement line>");
+    Marker m = enter_section_(b, l, _NONE_, SENTENCE, "<sentence>");
+    r = sentence_0(b, l + 1);
+    r = r && sentence_1(b, l + 1);
+    r = r && consumeToken(b, DOT);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // statement_with_prefix+
+  private static boolean sentence_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "sentence_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = statement_with_prefix(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!statement_with_prefix(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "sentence_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // LINE_NUMBER?
+  private static boolean sentence_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "sentence_1")) return false;
+    consumeToken(b, LINE_NUMBER);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // performStmt | stopStmt | displayStmt
+  public static boolean statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
     r = performStmt(b, l + 1);
     if (!r) r = stopStmt(b, l + 1);
     if (!r) r = displayStmt(b, l + 1);
@@ -327,13 +404,32 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STOP RUN DOT
+  // LINE_NUMBER? statement
+  static boolean statement_with_prefix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_with_prefix")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = statement_with_prefix_0(b, l + 1);
+    r = r && statement(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // LINE_NUMBER?
+  private static boolean statement_with_prefix_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_with_prefix_0")) return false;
+    consumeToken(b, LINE_NUMBER);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // STOP RUN
   public static boolean stopStmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "stopStmt")) return false;
     if (!nextTokenIs(b, STOP)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, STOP, RUN, DOT);
+    r = consumeTokens(b, 0, STOP, RUN);
     exit_section_(b, m, STOP_STMT, r);
     return r;
   }
